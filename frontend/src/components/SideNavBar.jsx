@@ -59,12 +59,13 @@ export default function SideNavBar({
             <div className="relative">
               <span className="material-symbols-outlined absolute left-[12px] top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">location_on</span>
               <select
-                value={params.location}
+                value={params.location || ""}
                 onChange={(e) => handleSelectChange('location', e.target.value)}
                 className="w-full bg-surface-container border border-white/10 rounded-lg pl-[40px] pr-sm py-sm text-on-surface font-body-md glass-input appearance-none focus:outline-none transition-colors"
               >
+                <option value="" disabled>Select Location</option>
                 {locations.length === 0 ? (
-                  <option>Loading...</option>
+                  <option disabled>Loading...</option>
                 ) : (
                   locations.map(loc => (
                     <option key={loc} value={loc}>{loc}</option>
@@ -80,12 +81,13 @@ export default function SideNavBar({
             <div className="relative">
               <span className="material-symbols-outlined absolute left-[12px] top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">restaurant</span>
               <select
-                value={params.cuisine}
+                value={params.cuisine || ""}
                 onChange={(e) => handleSelectChange('cuisine', e.target.value)}
                 className="w-full bg-surface-container border border-white/10 rounded-lg pl-[40px] pr-sm py-sm text-on-surface font-body-md glass-input appearance-none focus:outline-none transition-colors"
               >
+                <option value="" disabled>Select Cuisine</option>
                 {cuisines.length === 0 ? (
-                  <option>Loading...</option>
+                  <option disabled>Loading...</option>
                 ) : (
                   cuisines.map(cuis => (
                     <option key={cuis} value={cuis}>
@@ -162,7 +164,12 @@ export default function SideNavBar({
         <button
           type="button"
           onClick={onSubmit}
-          className="mt-auto w-full bg-primary-container text-on-primary-container font-label-md text-label-md py-sm rounded-lg flex items-center justify-center gap-xs glow-hover transition-all duration-300 active:scale-95"
+          disabled={!params.location || !params.cuisine}
+          className={`mt-auto w-full font-label-md text-label-md py-sm rounded-lg flex items-center justify-center gap-xs transition-all duration-300 ${
+            (!params.location || !params.cuisine)
+              ? 'bg-surface-variant text-on-surface-variant/40 cursor-not-allowed border border-white/5 opacity-50'
+              : 'bg-primary-container text-on-primary-container glow-hover active:scale-95 cursor-pointer'
+          }`}
         >
           <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
           Generate Suggestions

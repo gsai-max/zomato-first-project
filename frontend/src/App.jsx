@@ -4,6 +4,7 @@ import SideNavBar from './components/SideNavBar';
 import RestaurantCard from './components/RestaurantCard';
 import LoadingState from './components/LoadingState';
 import EmptyState from './components/EmptyState';
+import WelcomeState from './components/WelcomeState';
 
 const DEFAULT_LOCATIONS = ["Indiranagar", "Koramangala", "Lavelle Road", "HSR", "BTM", "Whitefield", "Jayanagar"];
 const DEFAULT_CUISINES = ["italian", "chinese", "north indian", "south indian", "japanese", "continental", "mediterranean"];
@@ -16,17 +17,18 @@ export default function App() {
   const [cuisines, setCuisines] = useState(DEFAULT_CUISINES);
 
   const [params, setParams] = useState({
-    location: 'Indiranagar',
-    cuisine: 'italian',
-    budget: 'medium',
-    rating: 3.5,
-    mood: 'a cozy, candle-lit spot for a romantic anniversary date'
+    location: '',
+    cuisine: '',
+    budget: '',
+    rating: 0.0,
+    mood: ''
   });
 
   // UI state variables
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
   
   const [summary, setSummary] = useState('');
   const [recommendations, setRecommendations] = useState([]);
@@ -45,14 +47,9 @@ export default function App() {
       .then(data => {
         if (data.locations && data.locations.length > 0) {
           setLocations(data.locations);
-          // Set location default if available
-          const defaultLoc = data.locations.includes('Indiranagar') ? 'Indiranagar' : data.locations[0];
-          setParams(prev => ({ ...prev, location: defaultLoc }));
         }
         if (data.cuisines && data.cuisines.length > 0) {
           setCuisines(data.cuisines);
-          const defaultCuis = data.cuisines.includes('italian') ? 'italian' : data.cuisines[0];
-          setParams(prev => ({ ...prev, cuisine: defaultCuis }));
         }
       })
       .catch(err => {
@@ -60,12 +57,10 @@ export default function App() {
       });
   }, []);
 
-  // Fetch initial recommendations on startup so dashboard is populated instantly!
-  useEffect(() => {
-    handleSearch();
-  }, []);
-
   const handleSearch = async () => {
+    if (!params.location || !params.cuisine) {
+      return;
+    }
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -95,6 +90,7 @@ export default function App() {
       setSummary(data.summary || '');
       setMeta(data.meta || {});
       setSuccess(true);
+      setHasSearched(true);
     } catch (err) {
       console.error(err);
       setError(err.message);
@@ -109,6 +105,7 @@ export default function App() {
   const loadMockFallbacks = () => {
     console.log("Loading luxury client-side fallbacks for design verification.");
     setSuccess(true);
+    setHasSearched(true);
     setSummary(`Based on your request for a romantic anniversary date in ${params.location}, I've prioritized intimate venues with exceptional ambient lighting, highly-rated ${params.cuisine} cuisine, and attentive service. These spots balance a premium ${params.budget} budget with an unforgettable atmosphere.`);
     setRecommendations([
       {
@@ -155,19 +152,20 @@ export default function App() {
 
   const handleClearFilters = () => {
     setParams({
-      location: locations[0] || 'Indiranagar',
-      cuisine: cuisines[0] || 'italian',
-      budget: 'medium',
+      location: '',
+      cuisine: '',
+      budget: '',
       rating: 0.0,
       mood: ''
     });
+    setHasSearched(false);
   };
 
   const handleBroadenSearch = () => {
     setParams(prev => ({
       ...prev,
       rating: Math.max(0.0, prev.rating - 1.0),
-      budget: 'medium'
+      budget: ''
     }));
   };
 
@@ -248,6 +246,8 @@ export default function App() {
           {/* Core Content Switching logic */}
           {loading ? (
             <LoadingState />
+          ) : !hasSearched ? (
+            <WelcomeState />
           ) : sortedRecs.length === 0 ? (
             <EmptyState
               location={params.location}

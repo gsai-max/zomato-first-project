@@ -748,10 +748,11 @@ Choose either **Option A (Rapid Single-Process Streamlit Hub)** or **Option B (F
       return {"status": "healthy", "service": "Zomato AI Recommendation Server"}
   ```
 
-#### Track Option B: React Frontend Empty State Enhancements (`frontend/src/components/EmptyState.jsx`)
-* Display a dynamic, user-friendly feedback message containing the searched location.
-* Incorporate a multi-layered CSS sonar/radar ping animation around a `location_off` icon to visually engage the user when no results match active filters.
-* Recommend alternatives such as trying other locations or adjusting active search parameters.
+#### Track Option B: React Frontend Empty State & Onboarding Enhancements (`frontend/src/components/EmptyState.jsx` & `frontend/src/components/WelcomeState.jsx`)
+* **Clean Parameter Setup**: Removed all default pre-selected location, cuisine, budget, and rating settings on startup, rendering a clean sidebar panel with select placeholders.
+* **Generate Suggestions Button**: Disabled the button and styled it in a muted state until the user selects both a Location and a Cuisine.
+* **Onboarding/Welcome State**: Introduced `<WelcomeState />` component which displays a beautiful onboarding prompt when the application starts or when filters are reset.
+* **Empty State Radar**: Modified `<EmptyState />` to accept dynamic location props and display a multi-layered CSS sonar/radar ping animation when searches return 0 results.
 
 ---
 
