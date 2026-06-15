@@ -34,6 +34,18 @@ repo = RestaurantRepository(storage_type="parquet", file_path=settings.DATA_PATH
 filter_svc = FilterService(repo, settings.MAX_CANDIDATES)
 orchestrator = RecommendationOrchestrator(filter_svc)
 
+@app.get("/")
+def root_endpoint():
+    """
+    Welcome endpoint returning API metadata and links.
+    """
+    return {
+        "service": "Gastro AI Recommendation API",
+        "status": "online",
+        "documentation": "/docs",
+        "health_check": "/api/v1/health"
+    }
+
 @app.get("/api/v1/search-options")
 def get_search_options():
     """
