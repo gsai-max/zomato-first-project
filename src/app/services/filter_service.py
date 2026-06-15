@@ -38,7 +38,10 @@ class FilterService:
         if df_filtered.empty:
             return []
         
-        # 5. Pre-sort and cap
+        # 5. Deduplicate by name to prevent duplicate outlets on the dashboard
+        df_filtered = df_filtered.drop_duplicates(subset=['name'])
+        
+        # 6. Pre-sort and cap
         df_filtered = df_filtered.sort_values(by=['rating', 'estimated_cost'], ascending=[False, True])
         candidates_df = df_filtered.head(self.max_candidates)
         
