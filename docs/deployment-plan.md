@@ -46,7 +46,7 @@ Ensure the following variables are configured in the respective hosting dashboar
 ## 🚀 Step-by-Step Deployment Instructions
 
 ### Step 1: Push Code to GitHub
-Ensure all recent changes, including the root [.gitignore](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/.gitignore), [Procfile](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/Procfile), [Dockerfile](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/Dockerfile), [railway.json](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/railway.json), and [railway.toml](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/railway.toml), are pushed to your GitHub repository:
+Ensure all recent changes, including the root [.gitignore](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/.gitignore), [Procfile](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/Procfile), [Dockerfile](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/Dockerfile), [railway.json](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/railway.json), [railway.toml](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/railway.toml), and frontend configuration [vercel.json](file:///c:/Nextleap%20Projects%20Git/ZomatoFirstProject/frontend/vercel.json), are pushed to your GitHub repository:
 ```bash
 git add .
 git commit -m "Configure deployment scripts and environment parameters"
