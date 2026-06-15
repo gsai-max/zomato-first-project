@@ -47,14 +47,14 @@ def root_endpoint():
     }
 
 @app.get("/api/v1/search-options")
-def get_search_options():
+def get_search_options(location: str = None, cuisine: str = None):
     """
     Retrieve unique locations and cuisines populated in the underlying Zomato dataset.
     This ensures that select dropdowns match valid dataset parameters perfectly.
     """
     try:
-        locations = repo.get_unique_locations()
-        cuisines = repo.get_unique_cuisines()
+        locations = repo.get_unique_locations(cuisine=cuisine)
+        cuisines = repo.get_unique_cuisines(location=location)
         return {
             "locations": locations,
             "cuisines": cuisines

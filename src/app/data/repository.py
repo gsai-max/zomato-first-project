@@ -24,9 +24,22 @@ class RestaurantRepository:
     def get_all_raw(self) -> pd.DataFrame:
         return self._df
 
-    def get_unique_locations(self) -> List[str]:
-        return sorted(self._df['location'].unique().tolist())
+    def get_unique_locations(self, cuisine: Optional[str] = None) -> List[str]:
+        df = self._df
+        if df is None or df.empty:
+            return []
+        if cuisine:
+            cuisine_lower = cuisine.lower()
+            # Filter restaurants that have the selected cuisine
+            df = df[df['cuisines'].apply(lambda cuisinesList: cuisine_lower in [c.lower() for c in cuisinesList])]
+        return sorted(df['location'].unique().tolist())
 
-    def get_unique_cuisines(self) -> List[str]:
-        flat_list = [c for sublist in self._df['cuisines'].tolist() for c in sublist]
+    def get_unique_cuisines(self, location: Optional[str] = None) -> List[str]:
+        df = self._df
+        if df is None or df.empty:
+            return []
+        if location:
+            # Filter restaurants in the selected location
+            df = df[df['location'].str.lower() == location.lower()]
+        flat_list = [c for sublist in df['cuisines'].tolist() for c in sublist]
         return sorted(list(set(flat_list)))

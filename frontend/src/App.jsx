@@ -37,25 +37,43 @@ export default function App() {
   // Segmented Control active tab (Best Match, Nearest, Top Rated)
   const [activeTab, setActiveTab] = useState('Best Match');
 
-  // Load search parameters (locations/cuisines) from the FastAPI backend on startup
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/api/v1/search-options`)
+  const loadSearchOptions = (selectedLoc = '', selectedCuis = '') => {
+    let url = `${API_BASE_URL}/api/v1/search-options`;
+    const paramsList = [];
+    if (selectedLoc) paramsList.push(`location=${encodeURIComponent(selectedLoc)}`);
+    if (selectedCuis) paramsList.push(`cuisine=${encodeURIComponent(selectedCuis)}`);
+    if (paramsList.length > 0) {
+      url += `?${paramsList.join('&')}`;
+    }
+
+    fetch(url)
       .then(res => {
         if (!res.ok) throw new Error("Could not reach API server.");
         return res.json();
       })
       .then(data => {
-        if (data.locations && data.locations.length > 0) {
+        if (data.locations) {
           setLocations(data.locations);
+          if (selectedLoc && !data.locations.includes(selectedLoc)) {
+            setParams(prev => ({ ...prev, location: '' }));
+          }
         }
-        if (data.cuisines && data.cuisines.length > 0) {
+        if (data.cuisines) {
           setCuisines(data.cuisines);
+          if (selectedCuis && !data.cuisines.includes(selectedCuis)) {
+            setParams(prev => ({ ...prev, cuisine: '' }));
+          }
         }
       })
       .catch(err => {
         console.warn("API Server options load failed. Using high-quality client fallbacks: ", err.message);
       });
-  }, []);
+  };
+
+  // Load search parameters (locations/cuisines) from the FastAPI backend dynamically
+  useEffect(() => {
+    loadSearchOptions(params.location, params.cuisine);
+  }, [params.location, params.cuisine]);
 
   const handleSearch = async () => {
     if (!params.location || !params.cuisine) {

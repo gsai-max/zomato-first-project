@@ -753,6 +753,8 @@ Choose either **Option A (Rapid Single-Process Streamlit Hub)** or **Option B (F
 * **Generate Suggestions Button**: Disabled the button and styled it in a muted state until the user selects both a Location and a Cuisine.
 * **Onboarding/Welcome State**: Introduced `<WelcomeState />` component which displays a beautiful onboarding prompt when the application starts or when filters are reset.
 * **Empty State Radar**: Modified `<EmptyState />` to accept dynamic location props and display a multi-layered CSS sonar/radar ping animation when searches return 0 results.
+* **Interdependent Filtering**: Configured dropdown options to fetch and filter options dynamically. Selecting a Location filters Cuisines, and selecting a Cuisine filters Locations, with invalid current options being safely reset.
+* **Min Rating Slider Fix**: Updated the `input[type=range]` styling block in `index.css` to specify an explicit height of `24px` to fix the click/drag detection issue and added standard cross-browser styles for Firefox support.
 
 ---
 

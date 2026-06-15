@@ -73,3 +73,21 @@ def test_filter_service_zero_candidates(mock_repository):
     
     candidates = filter_svc.filter_candidates(prefs)
     assert len(candidates) == 0
+
+def test_repository_interdependent_filtering(mock_repository):
+    # 1. Test get_unique_locations filtered by cuisine
+    locations_cafe = mock_repository.get_unique_locations(cuisine="cafe")
+    assert locations_cafe == ["Delhi"]
+
+    locations_italian = mock_repository.get_unique_locations(cuisine="italian")
+    assert locations_italian == ["Bangalore"]
+
+    # 2. Test get_unique_cuisines filtered by location
+    cuisines_delhi = mock_repository.get_unique_cuisines(location="Delhi")
+    assert "cafe" in cuisines_delhi
+    assert "bakery" in cuisines_delhi
+    assert "indian" in cuisines_delhi
+    assert "italian" not in cuisines_delhi
+
+    cuisines_bangalore = mock_repository.get_unique_cuisines(location="Bangalore")
+    assert cuisines_bangalore == ["italian", "pasta", "pizza"]
