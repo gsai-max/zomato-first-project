@@ -250,6 +250,7 @@ export default function App() {
             <LoadingState />
           ) : sortedRecs.length === 0 ? (
             <EmptyState
+              location={params.location}
               onClear={handleClearFilters}
               onBroaden={handleBroadenSearch}
             />

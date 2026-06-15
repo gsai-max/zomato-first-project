@@ -748,6 +748,11 @@ Choose either **Option A (Rapid Single-Process Streamlit Hub)** or **Option B (F
       return {"status": "healthy", "service": "Zomato AI Recommendation Server"}
   ```
 
+#### Track Option B: React Frontend Empty State Enhancements (`frontend/src/components/EmptyState.jsx`)
+* Display a dynamic, user-friendly feedback message containing the searched location.
+* Incorporate a multi-layered CSS sonar/radar ping animation around a `location_off` icon to visually engage the user when no results match active filters.
+* Recommend alternatives such as trying other locations or adjusting active search parameters.
+
 ---
 
 ### Phase 5: Fault-Tolerance & Production Polish
